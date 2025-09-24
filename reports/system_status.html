@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SystemWatch - 시스템 모니터링</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .good { color: green; }
+        .warning { color: orange; }
+        .critical { color: red; }
+        .status-box { 
+            border: 1px solid #ccc; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+        }
+    </style>
+</head>
+<body>
+    <h1>🖥️ SystemWatch 모니터링</h1>
+    <p><strong>마지막 업데이트:</strong> 2025-09-24 18:43:18</p>
+    
+    <div class="status-box">
+        <h3>💻 CPU 사용률: 0.0% - GOOD ✅</h3>
+    </div>
+    
+    <div class="status-box">
+        <h3>🧠 메모리 사용률: 7.01% - GOOD ✅</h3>
+    </div>
+    
+    <div class="status-box">
+        <h3>💾 디스크 사용률: 1% - GOOD ✅</h3>
+    </div>
+
+    <div class="status-box">
+        <h3> CPU 사용률 TOP5 프로세스 
+        <h4>/bin/bash (PID : 3318) 사용량 : 0.5% 
+/init (PID : 1) 사용량 : 0.0% 
+plan9 (PID : 6) 사용량 : 0.0% 
+/init (PID : 359) 사용량 : 0.0% 
+/init (PID : 360) 사용량 : 0.0% </h4>
+    </div>
+
+    <div class="status-box">
+        <h3> 메모리 사용률 TOP5 프로세스 
+        <h4>-bash (PID : 361) 사용량 : 0.1% 
+awk (PID : 3377) 사용량 : 0.0% 
+/bin/bash (PID : 3318) 사용량 : 0.0% 
+ps (PID : 3374) 사용량 : 0.0% 
+/init (PID : 1) 사용량 : 0.0% </h4>
+    </div>
+    
+    <div class="status-box">
+        <h3> 좀비 프로세스 
+        <h4>0</h4>
+    </div>
+
+
+</body>
+</html>
