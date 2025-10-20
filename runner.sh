@@ -1,8 +1,6 @@
 #!/bin/bash
 
 
-# SystemWatch - 시스템 모니터링 도구 v1.0
-
 # 설정 값들
 MONITOR_INTERVAL=60  # 60초마다 체크
 REPORT_DIR="reports"
@@ -49,7 +47,6 @@ then
 fi
 
 # 임계값 설정
-
 declare -A WARN CRIT
 WARN["cpu"]=70
 CRIT["cpu"]=85
@@ -58,28 +55,26 @@ CRIT["mem"]=90
 WARN["disk"]=80
 CRIT["disk"]=95
 
-# TODO 1: 시스템 정보 수집 함수들
+# cpu 정보 수집 함수
 collect_cpu_usage() {
-    # 여기에 CPU 사용률 수집 코드 작성
     cpu_usage=$(top -bn1 | grep '%Cpu(s)' | awk -F'[,: ]+' '{printf "%.1f\n", ( $2+ $4 )}' )
     get_status_level cpu $cpu_usage
 }
 
+# 메모리 사용률 수집 함수
 collect_memory_usage() {
-    # 여기에 메모리 사용률 수집 코드 작성
     memory_usage=$(free | grep "Mem:" | awk '{printf "%.2f\n", ($3*100 /$2) }')
     get_status_level mem $memory_usage
 }
 
+# 디스크 사용류 수집 함수수
 collect_disk_usage() {
-    # 여기에 디스크 사용률 수집 코드 작성
     disk_usage=$( df / | awk 'NR==2 {gsub(/%/,"",$5); print $5}')
     get_status_level disk $disk_usage
 }
 
-# TODO 2: 상태 판정 함수
+# 임계값에 대한 상태값 설정 함수수
 get_status_level() {
-    # GOOD/WARNING/CRITICAL 판정 로직
     system_name=$1
     usage_value=$2
     if (awk -v v="$usage_value" -v c="${CRIT[$system_name]}" 'BEGIN{exit !(v>=c)}'; )
@@ -97,30 +92,28 @@ get_status_level() {
         
 }
 
-# 새로 추가할 함수들
+# CPU 사용량 높은 프로세스 TOP 5
 get_top_cpu_processes() {
-    # CPU 사용량 높은 프로세스 TOP 5
     echo "$(ps aux --sort=-%cpu | tail -n +2 | head -n 5 | awk '{printf "%s (PID : %d) 사용량 : %.1f% \n", $11, $2, $3 }')"
 }
 
+# 메모리 사용량 높은 프로세스 TOP 5  
 get_top_memory_processes() {
-    # 메모리 사용량 높은 프로세스 TOP 5  
     echo "$(ps aux --sort=-%mem | tail -n +2 | head -n 5 | awk '{printf "%s (PID : %d) 사용량 : %.1f% \n", $11, $2, $4 }')"
 }
 
+# 좀비 프로세스 개수 확인
 check_zombie_processes() {
-    # 좀비 프로세스 개수 확인
     top -bn1 | awk 'NR>7 {if ( $8 == "Z" )print $8}' | wc -l
 }
 
+# ssmtp
 send_smtp_email() {
-    # 이메일 알림 발송
     local subject="$1"
     local message="$2"
     local to_email="${3:-wjdrudgml17@gmail.com}"
     local temp_file="/tmp/systemwatch_email_$$"
     
-    # 이메일 헤더와 본문 작성
     cat > "$temp_file" << EOF
 To: $to_email
 From: SystemWatch <wjdrudgml17@gmail.com>
@@ -160,7 +153,7 @@ EOF
     fi
 }
 
-# 이메일 테스트 스크립트
+# 이메일 테스트 함수
 test_email_system() {
     echo "=== SystemWatch 이메일 시스템 테스트 ==="
     
@@ -183,10 +176,7 @@ test_email_system() {
     echo "✅ 이메일 테스트 완료 - Gmail 받은편지함을 확인하세요!"
 }
 
-# 테스트 실행
-
 save_history() {
-    # 현재 상태를 히스토리에 저장
     TS=$(date +"%Y%m%d_%H:%M:%S")
     echo "$TS $cpu_usage $memory_usage $disk_usage" >> $HISTORY_CSV
 }
@@ -256,10 +246,6 @@ EOF
 
 
 
-
-
-
-# TODO 4: 메인 모니터링 루프
 main_monitoring_loop() {
     # 지정된 간격으로 반복 실행
     while true; do
@@ -278,18 +264,4 @@ main_monitoring_loop() {
     done
 }
 
-
-
-
 main_monitoring_loop
-
-# === SystemWatch 모니터링 결과 ===
-# 시간: 2024-09-22 14:30:15
-# CPU 사용률: 45% - GOOD ✅
-# 메모리 사용률: 68% - GOOD ✅  
-# 디스크 사용률: 82% - WARNING ⚠️
-
-# 상위 CPU 사용 프로세스:
-#   1. chrome: 12.5%
-#   2. firefox: 8.3%
-#   3. code: 5.2%
