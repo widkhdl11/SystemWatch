@@ -20,15 +20,15 @@ Shell Script 기반 시스템 모니터링 도구
 ---
 
 ## 프로젝트 구조
-SystemWatch/
-├── runner.sh                      # 메인 실행 파일
-├── reports/
-│   ├── system_status.html        # HTML 리포트
-│   └── history/
-│       └── history.csv           # 히스토리 데이터
-└── logs/
-    ├── email_log.txt             # 이메일 발송 로그
-    └── failed_email_log.txt      # 실패한 이메일 백업
+SystemWatch/  
+├── runner.sh                      # 메인 실행 파일  
+├── reports/  
+│   ├── system_status.html        # HTML 리포트  
+│   └── history/  
+│       └── history.csv           # 히스토리 데이터  
+└── logs/  
+    ├── email_log.txt             # 이메일 발송 로그  
+    └── failed_email_log.txt      # 실패한 이메일 백업  
 
 ---
 
